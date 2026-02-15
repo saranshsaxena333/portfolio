@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // --- Sticky Navbar Effect ---
     const navbar = document.querySelector('.navbar');
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Active Link Highlight on Scroll ---
     const sections = document.querySelectorAll('section');
-    
+
     window.addEventListener('scroll', () => {
         let current = '';
         sections.forEach(section => {
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function typeEffect() {
         const currentRole = roles[roleIndex];
-        
+
         if (isDeleting) {
             roleElement.textContent = currentRole.substring(0, charIndex - 1);
             charIndex--;
@@ -94,14 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                
+
                 // Animate counters if inside the revealed element
                 const counters = entry.target.querySelectorAll('.counter');
                 counters.forEach(counter => {
                     const target = +counter.getAttribute('data-target');
                     const duration = 2000; // 2 seconds
-                    const increment = target / (duration / 16); 
-                    
+                    const increment = target / (duration / 16);
+
                     let count = 0;
                     const updateCounter = () => {
                         count += increment;
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
     const messageInput = document.getElementById('message');
 
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         let isValid = true;
 
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Validate Email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(emailInput.value.trim())) {
+        if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
             emailInput.parentElement.classList.add('error');
             isValid = false;
         }
@@ -159,39 +159,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (isValid) {
-            // Simulate submission
             const submitBtn = contactForm.querySelector('button');
             const originalText = submitBtn.innerText;
             submitBtn.innerText = 'Sending...';
             submitBtn.disabled = true;
 
-            setTimeout(() => {
+            // Prepare for Formspree or similar service in the future
+            // const formData = new FormData(contactForm);
+
+            // Simulation of API call
+            try {
+                // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Success state
                 submitBtn.innerText = 'Message Sent!';
                 submitBtn.style.background = '#22c55e';
                 contactForm.reset();
-                
+
                 setTimeout(() => {
                     submitBtn.innerText = originalText;
                     submitBtn.disabled = false;
                     submitBtn.style.background = '';
                 }, 3000);
-            }, 1500);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                submitBtn.innerText = 'Error! Try again.';
+                submitBtn.style.background = '#ef4444';
+
+                setTimeout(() => {
+                    submitBtn.innerText = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.background = '';
+                }, 3000);
+            }
         }
     });
 
     // --- Magnetic Button Effect (Optional Polish) ---
     const buttons = document.querySelectorAll('.btn');
-    
+
     buttons.forEach(btn => {
         btn.addEventListener('mousemove', (e) => {
             const rect = btn.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
+
             // Subtle movement
             // btn.style.transform = `translate(${(x - rect.width/2)/5}px, ${(y - rect.height/2)/5}px)`;
         });
-        
+
         btn.addEventListener('mouseleave', () => {
             // btn.style.transform = 'translate(0, 0)';
         });
